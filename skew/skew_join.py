@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding:UTF-8 -*-
 from pyspark import SparkConf
-from random import Random
 from random import randint
 from pyspark.sql import Row
 from pyspark.sql.functions import col
