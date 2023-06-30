@@ -31,7 +31,7 @@ def aqe_optimizing_skew_join_tuning():
     spark.sql.adaptive.coalescePartitions.enabled   为了演示效果，关闭自动缩小分区
     :return:
     """
-    spark_conf = SparkConf().setAppName("DynamicAllocationTuning") \
+    spark_conf = SparkConf().setAppName("AqeOptimizingSkewJoin") \
         .set("spark.sql.autoBroadcastJoinThreshold", "-1") \
         .set("spark.sql.adaptive.coalescePartitions.enabled", "true") \
         .set("spark.sql.adaptive.enabled", "true") \

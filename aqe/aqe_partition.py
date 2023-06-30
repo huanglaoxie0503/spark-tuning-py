@@ -36,7 +36,7 @@ def aqe_partition_tuning():
     spark.sql.adaptive.advisoryPartitionSizeInBytes 合并后的分区，期望有多大
     :return:
     """
-    spark_conf = SparkConf().setAppName("AckWaitTuning") \
+    spark_conf = SparkConf().setAppName("AQEPartitionTuning") \
         .set("spark.sql.autoBroadcastJoinThreshold", "-1") \
         .set("spark.sql.adaptive.enabled", "true") \
         .set("spark.sql.adaptive.coalescePartitions.enabled", "true") \
