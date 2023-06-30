@@ -27,6 +27,7 @@ def skew_join_strategies(spark_session):
 
 def aqe_optimizing_skew_join_tuning():
     """
+    动态倾斜
     spark.sql.autoBroadcastJoinThreshold    为了演示效果，禁用广播join
     spark.sql.adaptive.coalescePartitions.enabled   为了演示效果，关闭自动缩小分区
     :return:
