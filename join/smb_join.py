@@ -2,7 +2,7 @@
 # -*- coding:UTF-8 -*-
 from pyspark import SparkConf
 from pyspark.sql.functions import broadcast
-from utils.common import get_spark_session
+from utils.common import get_spark_cluster_session
 
 
 def use_smb_join(spark_session):
@@ -32,7 +32,7 @@ def use_smb_join(spark_session):
 def smb_join_tuning():
     spark_conf = SparkConf().setAppName("BroadcastJoinTuning") \
         .set("spark.sql.shuffle.partitions", "36").setMaster("local[*]")
-    spark_session = get_spark_session(spark_conf=spark_conf)
+    spark_session = get_spark_cluster_session(spark_conf=spark_conf)
 
     use_smb_join(spark_session)
     # spark_session.sql("DESCRIBE spark_tuning.sale_courses").show()

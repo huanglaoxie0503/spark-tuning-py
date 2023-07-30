@@ -5,16 +5,16 @@ from random import randint
 from pyspark.sql import Row
 from pyspark.sql.functions import col
 from pyspark.sql.types import LongType, StringType, StructType, StructField
-from utils.common import get_spark_session, running_stop
+from utils.common import get_spark_cluster_session, running_stop
 
 
 # 定义打散函数
 def map_partitions(partitions):
     for item in partitions:
-        courseid = item["courseid"]
+        course_id = item["courseid"]
         rand_int = randint(0, 35)
         yield Row(
-            courseid=courseid,
+            courseid=course_id,
             orderid=item["orderid"],
             coursename=item["coursename"],
             cart_discount=item["cart_discount"],
@@ -22,31 +22,31 @@ def map_partitions(partitions):
             cart_createtime=item["cart_createtime"],
             dt=item["dt"],
             dn=item["dn"],
-            rand_courseid=f"{rand_int}_{courseid}"
+            rand_courseid=f"{rand_int}_{course_id}"
         )
 
 
 # 定义扁平化函数
 def flatten_row(row):
     items = []
-    courseid = row.courseid
-    coursename = row.coursename
+    course_id = row.courseid
+    course_name = row.coursename
     status = row.status
-    pointlistid = row.pointlistid
-    majorid = row.majorid
-    chapterid = row.chapterid
-    chaptername = row.chaptername
-    edusubjectid = row.edusubjectid
-    edusubjectname = row.edusubjectname
-    teacherid = row.teacherid
-    teachername = row.teachername
-    coursemanager = row.coursemanager
+    point_list_id = row.pointlistid
+    major_id = row.majorid
+    chapter_id = row.chapterid
+    chapter_name = row.chaptername
+    edu_subject_id = row.edusubjectid
+    edu_subject_name = row.edusubjectname
+    teacher_id = row.teacherid
+    teacher_name = row.teachername
+    course_manager = row.coursemanager
     money = row.money
     dt = row.dt
     dn = row.dn
     for i in range(36):
-        items.append((courseid, coursename, status, pointlistid, majorid, chapterid, chaptername, edusubjectid,
-                      edusubjectname, teacherid, teachername, coursemanager, money, dt, dn, f"{i}_{courseid}"))
+        items.append((course_id, course_name, status, point_list_id, major_id, chapter_id, chapter_name, edu_subject_id,
+                      edu_subject_name, teacher_id, teacher_name, course_manager, money, dt, dn, f"{i}_{course_id}"))
     return items
 
 
@@ -132,7 +132,7 @@ def skew_join_tuning():
         .set("spark.sql.autoBroadcastJoinThreshold", "-1") \
         .set("spark.sql.shuffle.partitions", "36") \
         .setMaster("local[*]")
-    spark_session = get_spark_session(spark_conf=spark_conf)
+    spark_session = get_spark_cluster_session(spark_conf=spark_conf)
 
     scatter_big_and_expansion_small(spark_session)
 

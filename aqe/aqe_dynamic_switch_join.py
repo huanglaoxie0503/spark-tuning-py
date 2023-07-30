@@ -2,7 +2,7 @@
 # -*- coding:UTF-8 -*-
 from pyspark import SparkConf
 
-from utils.common import get_spark_session
+from utils.common import get_spark_cluster_session
 
 
 def switch_join_strategies(spark_session):
@@ -31,7 +31,7 @@ def aqe_dynamic_switch_join_tuning():
         .set("spark.sql.adaptive.localShuffleReader.enabled", "true") \
         .setMaster("local[*]")
 
-    spark_session = get_spark_session(spark_conf=spark_conf)
+    spark_session = get_spark_cluster_session(spark_conf=spark_conf)
 
     switch_join_strategies(spark_session)
 

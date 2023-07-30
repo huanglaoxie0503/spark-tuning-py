@@ -2,12 +2,12 @@
 # -*- coding:UTF-8 -*-
 from pyspark import SparkConf
 
-from utils.common import get_spark_session
+from utils.common import get_spark_cluster_session
 
 
 def cbo_statics_collect():
     spark_conf = SparkConf().setAppName("CBO").setMaster("local[*]")
-    spark_session = get_spark_session(spark_conf=spark_conf)
+    spark_session = get_spark_cluster_session(spark_conf=spark_conf)
 
     analyze_table_and_column(spark_session, "sparktuning.sale_course", "courseid,dt,dn")
     analyze_table_and_column(spark_session, "sparktuning.course_shopping_cart", "courseid,orderid,dt,dn")

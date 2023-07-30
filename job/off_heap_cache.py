@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding:UTF-8 -*-
 from pyspark import SparkConf, StorageLevel
-from utils.common import get_spark_session
+from utils.common import get_spark_cluster_session
 
 
 def use_off_heap_memory(spark_session):
@@ -19,7 +19,7 @@ def use_off_heap_memory(spark_session):
 def off_heap_cache_tuning():
     spark_conf = SparkConf().setAppName("OFFHeapCache").setMaster("local[*]")
 
-    spark_session = get_spark_session(spark_conf=spark_conf)
+    spark_session = get_spark_cluster_session(spark_conf=spark_conf)
 
     use_off_heap_memory(spark_session)
 

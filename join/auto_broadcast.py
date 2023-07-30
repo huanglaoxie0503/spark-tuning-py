@@ -3,7 +3,7 @@
 from pyspark import SparkConf
 from pyspark.sql.functions import broadcast
 
-from utils.common import get_spark_session, running_stop
+from utils.common import get_spark_cluster_session, running_stop
 
 
 def auto_broadcast_join():
@@ -13,7 +13,7 @@ def auto_broadcast_join():
     """
     spark_conf = SparkConf().setAppName("BroadcastJoinTuning").set("spark.sql.autoBroadcastJoinThreshold",
                                                                    "10m").setMaster("local[*]")
-    spark_session = get_spark_session(spark_conf=spark_conf)
+    spark_session = get_spark_cluster_session(spark_conf=spark_conf)
 
     sql_str = """
         select
@@ -38,7 +38,7 @@ def force_broadcast_join():
     spark_conf = SparkConf().setAppName("BroadcastJoinTuning") \
         .set("spark.sql.autoBroadcastJoinThreshold", "-1") \
         .setMaster("local[*]")
-    spark_session = get_spark_session(spark_conf=spark_conf)
+    spark_session = get_spark_cluster_session(spark_conf=spark_conf)
 
     # TODO SQL Hint方式
     sql_str1 = """

@@ -2,7 +2,7 @@
 # -*- coding:UTF-8 -*-
 from pyspark import SparkConf
 
-from utils.common import get_spark_session
+from utils.common import get_spark_cluster_session
 
 
 def use_join(spark_session):
@@ -28,7 +28,7 @@ def use_join(spark_session):
 def big_table_join():
     spark_conf = SparkConf().setAppName("BroadcastJoinTuning").set("spark.sql.shuffle.partitions", "36").setMaster(
         "local[*]")
-    spark_session = get_spark_session(spark_conf=spark_conf)
+    spark_session = get_spark_cluster_session(spark_conf=spark_conf)
 
     use_join(spark_session)
 

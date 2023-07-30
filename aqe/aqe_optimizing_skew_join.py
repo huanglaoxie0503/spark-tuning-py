@@ -2,7 +2,7 @@
 # -*- coding:UTF-8 -*-
 from pyspark import SparkConf
 
-from utils.common import get_spark_session
+from utils.common import get_spark_cluster_session
 
 
 def skew_join_strategies(spark_session):
@@ -42,7 +42,7 @@ def aqe_optimizing_skew_join_tuning():
         .set("spark.sql.adaptive.advisoryPartitionSizeInBytes", "8mb") \
         .setMaster("local[*]")
 
-    spark_session = get_spark_session(spark_conf=spark_conf)
+    spark_session = get_spark_cluster_session(spark_conf=spark_conf)
 
     skew_join_strategies(spark_session)
 

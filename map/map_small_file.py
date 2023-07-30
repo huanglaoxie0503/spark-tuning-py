@@ -2,7 +2,7 @@
 # -*- coding:UTF-8 -*-
 from pyspark import SparkConf
 
-from utils.common import get_spark_session, running_stop
+from utils.common import get_spark_cluster_session, running_stop
 
 
 def map_small_file_tuning():
@@ -17,7 +17,7 @@ def map_small_file_tuning():
         .set("spark.sql.files.maxPartitionBytes", "128MB") \
         .setMaster("local[1]")
 
-    spark_session = get_spark_session(spark_conf=spark_conf)
+    spark_session = get_spark_cluster_session(spark_conf=spark_conf)
 
     spark_session.sql("select * from spark_tuning.course_shopping_cart")\
         .write.mode('overwrite').saveAsTable("spark_tuning.small_file_test")

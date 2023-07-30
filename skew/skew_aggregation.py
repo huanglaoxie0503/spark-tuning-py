@@ -4,7 +4,7 @@ from random import randint
 
 from pyspark import SparkConf
 
-from utils.common import get_spark_session
+from utils.common import get_spark_cluster_session
 
 
 # Define the UDFs
@@ -21,7 +21,7 @@ def skew_aggregation_tuning():
         .set("spark.sql.shuffle.partitions", "36") \
         .setMaster("local[*]")
 
-    spark_session = get_spark_session(spark_conf=spark_conf)
+    spark_session = get_spark_cluster_session(spark_conf=spark_conf)
 
     spark_session.udf.register("random_prefix", random_prefix_udf)
     spark_session.udf.register("remove_random_prefix", remove_random_prefix_udf)

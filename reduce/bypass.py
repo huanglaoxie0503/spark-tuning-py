@@ -2,7 +2,7 @@
 # -*- coding:UTF-8 -*-
 from pyspark import SparkConf
 
-from utils.common import get_spark_session
+from utils.common import get_spark_cluster_session
 
 
 def bypass_tuning():
@@ -14,7 +14,7 @@ def bypass_tuning():
         .set("spark.sql.shuffle.partitions", "36") \
         .setMaster("local[*]")
 
-    spark_session = get_spark_session(spark_conf=spark_conf)
+    spark_session = get_spark_cluster_session(spark_conf=spark_conf)
 
     # 查询出三张表 并进行join 插入到最终表中
     saleCourse = spark_session.sql("select * from spark_tuning.sale_course")

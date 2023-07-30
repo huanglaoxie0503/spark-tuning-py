@@ -2,7 +2,7 @@
 # -*- coding:UTF-8 -*-
 from pyspark import SparkConf
 
-from utils.common import get_spark_session
+from utils.common import get_spark_cluster_session
 
 """
 spark.sql.cbo.enabled：CBO 总开关。true 表示打开，false 表示关闭。要使用该功能，需确保相关表和列的统计信息已经生成。
@@ -21,7 +21,7 @@ def tuning():
     #     .set("spark.sql.cbo.joinReorder.dp.threshold", "") \
     #     .setMaster("local[*]")
 
-    spark_session = get_spark_session(spark_conf=spark_conf)
+    spark_session = get_spark_cluster_session(spark_conf=spark_conf)
 
     sql_str = """
       select

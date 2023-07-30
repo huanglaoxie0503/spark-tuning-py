@@ -2,7 +2,7 @@
 # -*- coding:UTF-8 -*-
 from pyspark import SparkConf
 
-from utils.common import get_spark_session
+from utils.common import get_spark_cluster_session
 
 
 def process_partition(p):
@@ -18,7 +18,7 @@ def locality_wait_tuning():
         .set("spark.locality.wait.rack", "20s") \
         .setMaster("local[*]")
 
-    spark_session = get_spark_session(spark_conf=spark_conf)
+    spark_session = get_spark_cluster_session(spark_conf=spark_conf)
 
     # 读取JSON文件并创建Dataset
     ds = spark_session.read.json("hdfs://Oscar-MacPro:8020/sparkdata/coursepay.log")

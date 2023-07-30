@@ -3,7 +3,7 @@
 from pyspark import SparkConf
 
 from aqe.aqe_partition import use_join_aqe
-from utils.common import get_spark_session
+from utils.common import get_spark_cluster_session
 
 
 def dynamic_allocation_tuning():
@@ -23,7 +23,7 @@ def dynamic_allocation_tuning():
         .set("spark.dynamicAllocation.shuffleTracking.enabled", "true") \
         .setMaster("local[*]")
 
-    spark_session = get_spark_session(spark_conf=spark_conf)
+    spark_session = get_spark_cluster_session(spark_conf=spark_conf)
 
     use_join_aqe(spark_session)
 
