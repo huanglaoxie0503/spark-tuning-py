@@ -11,7 +11,7 @@ def use_off_heap_memory_ack_wait(spark_session):
 
     def print_orderid(iterator):
         for item in iterator:
-            print(item.orderid)
+            print(item.order_id)
 
     result.foreachPartition(print_orderid)
 

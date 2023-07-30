@@ -7,7 +7,7 @@ from utils.common import get_spark_cluster_session
 
 def process_partition(p):
     for item in p:
-        print(item.orderid)
+        print(item.order_id)
 
 
 def locality_wait_tuning():
