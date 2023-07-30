@@ -1,8 +1,10 @@
 #!/usr/bin/python
 # -*- coding:UTF-8 -*-
+import os
+
 from pyspark import SparkConf
 
-from utils.common import get_spark_cluster_session
+from utils.common import get_spark_cluster_session, create_spark_session
 
 
 def map_file_buffer_tuning():
@@ -15,12 +17,33 @@ def map_file_buffer_tuning():
 
     :return:
     """
-    spark_conf = SparkConf().setAppName("MapFileBufferTuning") \
-        .set("spark.sql.shuffle.partitions", "36") \
-        .set("spark.shuffle.file.buffer", "64") \
-        .setMaster("local[*]")
+    # 本地模式
+    # spark_conf = SparkConf().setAppName("MapFileBufferTuning") \
+    #     .set("spark.sql.shuffle.partitions", "36") \
+    #     .set("spark.shuffle.file.buffer", "64") \
+    #     .setMaster("local[*]")
+    # spark_session = get_spark_cluster_session(spark_conf=spark_conf)
 
-    spark_session = get_spark_cluster_session(spark_conf=spark_conf)
+    # 集群模式
+    conf = SparkConf()
+    conf.setMaster('local[*]')
+    conf.set('fs.defaultFS', 'hdfs://node01:8020')
+    # 分区数
+    conf.set("spark.sql.shuffle.partitions", "36")
+    # 对比 shuffle write 的stage 耗时
+    conf.set("spark.shuffle.file.buffer", "64")
+
+    # 使用示例:
+    warehouse_dir = 'hdfs://node01:8020/user/hive/warehouse'
+    metastore_uri = 'thrift://node01:9083'
+
+    spark_session = create_spark_session(app_name='MapFileBufferTuning',
+                                         conf=conf,
+                                         hive_support=True,
+                                         warehouse_dir=warehouse_dir,
+                                         metastore_uri=metastore_uri)
+
+    # spark_session = get_spark_cluster_session(spark_conf=conf)
 
     # 查询出三张表 并进行join 插入到最终表中
     saleCourse = spark_session.sql("select * from spark_tuning.sale_courses")

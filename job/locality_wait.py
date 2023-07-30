@@ -21,7 +21,7 @@ def locality_wait_tuning():
     spark_session = get_spark_cluster_session(spark_conf=spark_conf)
 
     # 读取JSON文件并创建Dataset
-    ds = spark_session.read.json("hdfs://Oscar-MacPro:8020/sparkdata/coursepay.log")
+    ds = spark_session.read.json("hdfs://node01:8020/spark_data/coursepay.log")
     ds.cache()
 
     ds.foreachPartition(process_partition)

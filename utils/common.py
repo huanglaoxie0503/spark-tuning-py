@@ -13,6 +13,31 @@ def running_stop(num=60):
         n += 1
 
 
+def create_spark_session(app_name,
+                         conf,
+                         hive_support=False,
+                         hadoop_conf=None,
+                         warehouse_dir=None,
+                         metastore_uri=None):
+    spark_builder = SparkSession.builder.appName(app_name)
+    spark_builder.master('yarn')
+    spark_builder.config(conf=conf)
+
+    if hadoop_conf:
+        spark_builder.config('spark.hadoop.hadoopConf', hadoop_conf)
+
+    if hive_support:
+        spark_builder.enableHiveSupport()
+
+        if warehouse_dir:
+            spark_builder.config('spark.sql.warehouse.dir', warehouse_dir)
+
+        if metastore_uri:
+            spark_builder.config('hive.metastore.uris', metastore_uri)
+
+    return spark_builder.getOrCreate()
+
+
 def get_spark_local_session(spark_conf):
     """
     连接本地开发环境
@@ -25,7 +50,7 @@ def get_spark_local_session(spark_conf):
 
 def get_spark_cluster_session(spark_conf):
     """
-    连接集群环境
+    封装连接集群环境的公共参数
     :param spark_conf: sparkConf
     :return:
     """
@@ -33,8 +58,6 @@ def get_spark_cluster_session(spark_conf):
     metastore_uri = "thrift://node01:9083"
 
     spark_session = SparkSession.builder \
-        .appName("InitData") \
-        .master("local[*]") \
         .config(conf=spark_conf) \
         .config("spark.sql.warehouse.dir", warehouse_dir) \
         .config("hive.metastore.uris", metastore_uri) \
@@ -88,6 +111,8 @@ if __name__ == '__main__':
 
     # 集群模式
     conf = SparkConf()
+    conf.setAppName('InitData')
+    conf.setMaster('local[*]')
     conf.set('fs.defaultFS', 'hdfs://node01:8020')
     sparkSession = get_spark_cluster_session(spark_conf=conf)
 
